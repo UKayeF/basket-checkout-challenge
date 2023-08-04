@@ -1,5 +1,6 @@
 import store, {RootState} from "../store";
 import {addToBasket, BasketItem} from "../feature/basket";
+import {findSKUInBasket} from "./testUtils";
 
 describe('Adding to basket', () => {
     it('should work for existing products', () => {
@@ -34,7 +35,4 @@ describe('Adding to basket', () => {
         expect(createdItem?.quantity).toBe(1)
     })
 
-    const findSKUInBasket = (state: RootState) =>
-        (sku: number): BasketItem | undefined =>
-            state.basket.basket.find(item => item.sku === sku);
 })
