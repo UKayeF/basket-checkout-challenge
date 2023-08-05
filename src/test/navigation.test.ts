@@ -1,6 +1,5 @@
 import store from "../store";
 import {getLocation} from "./testUtils";
-import exp from "constants";
 import {backToShopping, goToCheckout} from "../feature/navigation";
 
 describe('Navigation', () => {
