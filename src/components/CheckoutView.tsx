@@ -4,7 +4,7 @@ import {useAppDispatch, useAppSelector} from "../hooks";
 import BasketItem from "./BasketItem";
 import {backToShopping} from "../feature/navigation";
 import {enterCreditCardNumber} from "../feature/basket";
-import {Button, Divider, List, ListItem, ListItemText, TextField} from "@mui/material";
+import {Button, Divider, List, ListItem, TextField} from "@mui/material";
 import {LocalShippingRounded, ShoppingCartRounded} from "@mui/icons-material";
 
 export default function CheckoutView(): ReactElement {
