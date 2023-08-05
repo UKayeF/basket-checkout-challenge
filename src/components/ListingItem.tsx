@@ -1,11 +1,10 @@
-import {Fragment, ReactElement, useEffect} from "react";
+import {ReactElement, useEffect} from "react";
 import {useSelector} from "react-redux";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import {RootState} from "../store";
 import {addToBasket, removeFromBasket} from "../feature/basket";
 import {Button, Card, CardActions, CardContent, Grid, Typography} from "@mui/material";
-import ShoppingCartRounded from '@mui/icons-material/ShoppingCartRounded'
-import {RemoveShoppingCartRounded} from "@mui/icons-material";
+import {AddShoppingCartRounded, RemoveShoppingCartRounded} from "@mui/icons-material";
 import {createSnackbar} from "../feature/snackbar";
 
 const selectListingItemBySKU = (sku: number) => (state: RootState) => state.listing.find((item) => item.sku === sku);
@@ -47,7 +46,7 @@ export default function ListingItem({sku}: { sku: number }): ReactElement {
             <CardActions>
                 <Grid container>
                     <Grid xs={12} style={{margin: 8}}>
-                        <Button disabled={!canAddToBasket} onClick={handleAddToCart} variant='contained' startIcon={<ShoppingCartRounded />}>
+                        <Button disabled={!canAddToBasket} onClick={handleAddToCart} variant='contained' startIcon={<AddShoppingCartRounded />}>
                             <Typography variant='h6' style={{ marginRight: 8 }}>
                                 {item.price}€
                             </Typography>
@@ -57,7 +56,7 @@ export default function ListingItem({sku}: { sku: number }): ReactElement {
                         </Button>
                     </Grid>
                     <Grid xs={12} style={{margin: 8}}>
-                        <Button disabled={!canRemoveFromBasket} onClick={handleRemoveFromCart} variant='contained' startIcon={<RemoveShoppingCartRounded/>}>
+                        <Button disabled={!canRemoveFromBasket} onClick={handleRemoveFromCart} variant='text' startIcon={<RemoveShoppingCartRounded/>}>
                             Remove from Basket
                         </Button>
                     </Grid>
