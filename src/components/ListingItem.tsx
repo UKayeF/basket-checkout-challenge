@@ -1,11 +1,12 @@
-import {Fragment, ReactElement} from "react";
+import {Fragment, ReactElement, useEffect} from "react";
 import {useSelector} from "react-redux";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import {RootState} from "../store";
 import {addToBasket, removeFromBasket} from "../feature/basket";
-import {Button} from "@mui/material";
+import {Button, Card, CardActions, CardContent, Typography} from "@mui/material";
 import ShoppingCartRounded from '@mui/icons-material/ShoppingCartRounded'
 import {RemoveShoppingCartRounded} from "@mui/icons-material";
+import {createSnackbar} from "../feature/snackbar";
 
 const selectListingItemBySKU = (sku: number) => (state: RootState) => state.listing.find((item) => item.sku === sku);
 const selectBasketItemBySKU = (sku: number) => (state: RootState) => state.basket.basket.find((item) => item.sku === sku);
@@ -13,11 +14,19 @@ export default function ListingItem({sku}: { sku: number }): ReactElement {
     const dispatch = useAppDispatch();
     const item = useAppSelector(selectListingItemBySKU(sku))
     const itemInBasket = useSelector(selectBasketItemBySKU(sku));
-    if (!item) return <p>No item matches this sku: {sku}</p>
     const quantityInBasket = itemInBasket?.quantity ?? 0;
-    const allowedQuantity = item.basketLimit;
-    const canAddToBasket = quantityInBasket < allowedQuantity;
+    const allowedQuantity = item?.basketLimit ?? 0;
+    const canAddToBasket = item && quantityInBasket < allowedQuantity;
     const canRemoveFromBasket = quantityInBasket > 0;
+    useEffect(() => {
+        if (!canAddToBasket){
+            dispatch(createSnackbar({
+                severity: 'info',
+                message: 'Maximum amount for given item reached!',
+            }))
+        }
+    }, [canAddToBasket, dispatch])
+    if (!item) return <p>No item matches this sku: {sku}</p>
     function handleAddToCart(): void {
         dispatch(addToBasket(sku))
     }
@@ -25,22 +34,24 @@ export default function ListingItem({sku}: { sku: number }): ReactElement {
         dispatch(removeFromBasket(sku))
     }
     return (
-        <Fragment>
-            <tr>
-                <td>{item.name}</td>
-                <td>{item.description}</td>
-                <td>{item.price}</td>
-                {canAddToBasket ? <td>
-                    <Button onClick={handleAddToCart} variant='contained' startIcon={<ShoppingCartRounded />}>
-                        Add to Cart
-                    </Button>
-                </td> : <td>Maximum amount of items reached!</td>}
-                {canRemoveFromBasket && <td>
-                    <Button onClick={handleRemoveFromCart} variant='contained' startIcon={<RemoveShoppingCartRounded/>}>
-                        Remove from Basket
-                    </Button>
-                </td>}
-            </tr>
-        </Fragment>
+        <Card sx={{ minWidth: 275, width: 540 }} variant='outlined'>
+            <CardContent>
+                <Typography variant='h5'>
+                    {item.name}
+                </Typography>
+                <Typography variant='subtitle1'>
+                    {item.description}
+                </Typography>
+            </CardContent>
+            <CardActions>
+                <Button disabled={!canAddToBasket} onClick={handleAddToCart} variant='contained' startIcon={<ShoppingCartRounded />}>
+                    Add to Cart
+                </Button>
+                <Button disabled={!canRemoveFromBasket} onClick={handleRemoveFromCart} variant='contained' startIcon={<RemoveShoppingCartRounded/>}>
+                    Remove from Basket
+                </Button>
+            </CardActions>
+            <td>{item.price}</td>
+        </Card>
     )
 }

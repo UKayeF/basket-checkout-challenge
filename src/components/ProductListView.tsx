@@ -19,23 +19,11 @@ export default function ProductListView(): ReactElement {
     return (
         <Fragment>
             <Header/>
-            <table>
-                <tbody>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                {
-                    listedItems.map(
-                        (item) => <ListingItem key={item.sku} sku={item.sku}/>
-                    )
-                }
-                </tbody>
-            </table>
-
+            {
+                listedItems.map(
+                    (item) => <ListingItem key={item.sku} sku={item.sku}/>
+                )
+            }
             <Button onClick={handleGoToCheckout} variant='contained' startIcon={<ShoppingCartCheckoutRounded/>}>Go to
                 Checkout</Button>
         </Fragment>
