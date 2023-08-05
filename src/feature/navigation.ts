@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-type Location = 'Listing' | 'Checkout';
+export type Location = 'Listing' | 'Checkout';
 export interface Navigation {
     location: Location
 }

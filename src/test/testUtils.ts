@@ -1,5 +1,6 @@
 import {RootState} from "../store";
 import {BasketItem} from "../feature/basket";
+import {Location} from "../feature/navigation";
 
 export const findSKUInBasket = (state: RootState) =>
     (sku: number): BasketItem | undefined =>
@@ -7,3 +8,5 @@ export const findSKUInBasket = (state: RootState) =>
 
 export const getCreditCardNumber = (state: RootState): string =>
     state.basket.cardNumber;
+
+export const getLocation = (state: RootState): Location => state.navigation.location
