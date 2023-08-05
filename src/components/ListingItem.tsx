@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import {RootState} from "../store";
 import {addToBasket, removeFromBasket} from "../feature/basket";
-import {Button, Card, CardActions, CardContent, Typography} from "@mui/material";
+import {Button, Card, CardActions, CardContent, Grid, Typography} from "@mui/material";
 import ShoppingCartRounded from '@mui/icons-material/ShoppingCartRounded'
 import {RemoveShoppingCartRounded} from "@mui/icons-material";
 import {createSnackbar} from "../feature/snackbar";
@@ -34,7 +34,7 @@ export default function ListingItem({sku}: { sku: number }): ReactElement {
         dispatch(removeFromBasket(sku))
     }
     return (
-        <Card sx={{ minWidth: 275, width: 540 }} variant='outlined'>
+        <Card sx={{ minWidth: 275, width: 300, margin: '8px auto' }} variant='outlined'>
             <CardContent>
                 <Typography variant='h5'>
                     {item.name}
@@ -42,16 +42,27 @@ export default function ListingItem({sku}: { sku: number }): ReactElement {
                 <Typography variant='subtitle1'>
                     {item.description}
                 </Typography>
+
             </CardContent>
             <CardActions>
-                <Button disabled={!canAddToBasket} onClick={handleAddToCart} variant='contained' startIcon={<ShoppingCartRounded />}>
-                    Add to Cart
-                </Button>
-                <Button disabled={!canRemoveFromBasket} onClick={handleRemoveFromCart} variant='contained' startIcon={<RemoveShoppingCartRounded/>}>
-                    Remove from Basket
-                </Button>
+                <Grid container>
+                    <Grid xs={12} style={{margin: 8}}>
+                        <Button disabled={!canAddToBasket} onClick={handleAddToCart} variant='contained' startIcon={<ShoppingCartRounded />}>
+                            <Typography variant='h6' style={{ marginRight: 8 }}>
+                                {item.price}€
+                            </Typography>
+                            <Typography variant='subtitle2'>
+                                Add to Cart
+                            </Typography>
+                        </Button>
+                    </Grid>
+                    <Grid xs={12} style={{margin: 8}}>
+                        <Button disabled={!canRemoveFromBasket} onClick={handleRemoveFromCart} variant='contained' startIcon={<RemoveShoppingCartRounded/>}>
+                            Remove from Basket
+                        </Button>
+                    </Grid>
+                </Grid>
             </CardActions>
-            <td>{item.price}</td>
         </Card>
     )
 }
